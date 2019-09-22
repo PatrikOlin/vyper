@@ -36,7 +36,9 @@ export default {
       this.timeRemaining = 60;
       document.activeElement.blur();
     },
-    reset: function() {}
+    resetTimer: function() {
+      this.endTypingSpeed();
+    }
   }
 };
 </script>
@@ -45,8 +47,7 @@ export default {
 .timer {
   font-size: 100px;
   text-align: center;
-  color: white;
+  color: var(--yellow);
   border-radius: 100;
-  background-color: green;
 }
 </style>

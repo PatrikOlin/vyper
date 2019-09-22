@@ -7,7 +7,7 @@
         <div class="typer mt-3">
           <textarea
             class="form-control"
-            id="exampleFormControlTextarea1"
+            id="typerTextArea"
             rows="10"
             placeholder="start typing here"
             v-model="typedText"
@@ -16,6 +16,9 @@
       </div>
       <div class="col-4">
         <Timer ref="timer" v-on:is-typing="isTyping = $event" v-on:calc-score="calculateWpm()" />
+        <div class="mt-2">
+          <button class="btn btn-reset btn-block" @click="reset()">Reset</button>
+        </div>
         <div class="score mt-3">
           <h2>Score:</h2>
           <div class="alert-info mt-2">
@@ -34,7 +37,8 @@
 
 <script>
 import Timer from "./Timer.vue";
-const PARAGRAPH = `There is a theory which states that if ever anyone discovers exactly what the Universe is for and why it is here, it will instantly disappear and be replaced by something even more bizarre and inexplicable. There is another theory which states that this has already happened.`;
+import PARAGRAPHS from "../assets/paragraphs.json";
+
 export default {
   name: "Typer",
   components: {
@@ -42,8 +46,9 @@ export default {
   },
   data: function() {
     return {
-      title: "Vue-typer",
-      originalParagraph: PARAGRAPH,
+      title: "Vyper",
+      paragraphs: PARAGRAPHS.paragraphs,
+      originalParagraph: null,
       typedText: "",
       typoIndex: -1,
       isTyping: false,
@@ -71,7 +76,21 @@ export default {
         wpm: words,
         typos: this.typos
       };
+    },
+    pickNewParagraph() {
+      const idx = Math.floor(Math.random() * this.paragraphs.length);
+      this.originalParagraph = this.paragraphs[idx].paragraph;
+    },
+    reset() {
+      this.isTyping = false;
+      this.typoIndex = -1;
+      this.pickNewParagraph();
+      this.typedText = "";
+      this.$refs.timer.resetTimer();
     }
+  },
+  created() {
+    this.pickNewParagraph();
   },
   computed: {
     outputHTML: function() {
@@ -107,6 +126,14 @@ export default {
         }
         this.typoIndex = -1;
       }
+      if (
+        this.isTyping &&
+        this.typedText.length === this.originalParagraph.length &&
+        this.typoIndex === -1
+      ) {
+        this.pickNewParagraph();
+        this.typedText = "";
+      }
     }
   }
 };
@@ -114,12 +141,34 @@ export default {
 
 <style>
 .correct {
-  color: rgb(63, 81, 181);
-  font-size: 22px;
+  color: var(--pink);
+  font-size: 20px;
 }
 
 .typo {
-  color: #f00;
-  font-size: 22px;
+  color: var(--hot-pink);
+  font-size: 20px;
+  text-decoration: underline;
+  -webkit-text-decoration-color: var(--hot-pink);
+  text-decoration-color: var(--hot-pink);
+  -webkit-text-decoration-style: wavy;
+  text-decoration-style: wavy;
+}
+
+.paragraph {
+  text-align: left;
+  font-size: 18px;
+}
+
+.typer textarea {
+  color: var(--typed-text);
+  background-color: var(--dark-bg);
+  border: none;
+}
+
+.typer textarea:focus {
+  color: var(--typed-text);
+  background-color: var(--dark-bg);
+  outline: none;
 }
 </style>
