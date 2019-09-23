@@ -1,17 +1,30 @@
 <template>
   <div id="app">
-    <Typer />
+    <div>
+      <nav class="navbar navbar-toggleable-md navbar-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <router-link to="/" class="nav-link">Home</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/stats" class="nav-link">Stats</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/keyboards" class="nav-link">Keyboards</router-link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <router-view class="view"></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import Typer from "./components/Typer.vue";
-
 export default {
   name: "app",
-  components: {
-    Typer
-  }
+  components: {}
 };
 </script>
 
@@ -26,18 +39,7 @@ export default {
   margin-top: 60px;
 }
 
-html,
-body {
-  background-color: var(--bg);
-}
-
-:root {
-  --bg: #222831;
-  --dark-bg: #1a1d24;
-  --pink: #f59bac;
-  --text-color: #f9ffee;
-  --typed-text: #fee6c0;
-  --yellow: #efbb35;
-  --hot-pink: #e84279;
+.nav-link {
+  color: var(--text-color);
 }
 </style>
