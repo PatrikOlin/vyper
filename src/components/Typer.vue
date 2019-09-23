@@ -29,6 +29,16 @@
             <strong>Typos:</strong>
             {{stats.current.typos}}
           </div>
+          <select
+            class="form-control mt-2"
+            name="authorDropdown"
+            v-model="selectedAuthor"
+            @change="filterListOfParagraphs()"
+          >
+            <option disabled>Pick author</option>
+            <option>Any</option>
+            <option v-for="author of authors" v-bind:value="author" v-bind:key="author">{{author}}</option>
+          </select>
         </div>
       </div>
     </div>
@@ -47,12 +57,16 @@ export default {
   data: function() {
     return {
       title: "Vyper",
-      paragraphs: PARAGRAPHS.paragraphs,
+      allParagraphs: PARAGRAPHS.paragraphs,
+      filteredParagraphs: [],
       originalParagraph: null,
       typedText: "",
+      correctlyTypedText: "",
       typoIndex: -1,
       isTyping: false,
       typos: 0,
+      authors: ["Douglas Adams", "George Orwell"],
+      selectedAuthor: "any",
       stats: {
         current: {},
         previous: {}
@@ -61,14 +75,14 @@ export default {
   },
   methods: {
     calculateWpm: function() {
-      let correctlyTypedText = this.typedText;
+      this.correctlyTypedText = this.correctlyTypedText.concat(this.typedText);
       if (this.typoIndex != -1) {
-        correctlyTypedText = this.originalParagraph.substring(
+        this.correctlyTypedText = this.originalParagraph.substring(
           0,
           this.typoIndex
         );
       }
-      let words = correctlyTypedText.split(" ").length;
+      let words = this.correctlyTypedText.split(" ").length;
       if (this.stats.current) {
         this.stats.previous = this.stats.current;
       }
@@ -78,8 +92,8 @@ export default {
       };
     },
     pickNewParagraph() {
-      const idx = Math.floor(Math.random() * this.paragraphs.length);
-      this.originalParagraph = this.paragraphs[idx].paragraph;
+      const idx = Math.floor(Math.random() * this.filteredParagraphs.length);
+      this.originalParagraph = this.filteredParagraphs[idx].paragraph;
     },
     reset() {
       this.isTyping = false;
@@ -87,9 +101,19 @@ export default {
       this.pickNewParagraph();
       this.typedText = "";
       this.$refs.timer.resetTimer();
+    },
+    filterListOfParagraphs() {
+      if (this.selectedAuthor.toLowerCase() != "any") {
+        this.filteredParagraphs = this.allParagraphs.filter(
+          p => p.author === this.selectedAuthor
+        );
+      } else {
+        this.filteredParagraphs = this.allParagraphs;
+      }
     }
   },
   created() {
+    this.filteredParagraphs = this.allParagraphs;
     this.pickNewParagraph();
   },
   computed: {
@@ -132,6 +156,9 @@ export default {
         this.typoIndex === -1
       ) {
         this.pickNewParagraph();
+        this.correctlyTypedText = this.correctlyTypedText.concat(
+          this.typedText
+        );
         this.typedText = "";
       }
     }
