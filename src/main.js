@@ -1,5 +1,6 @@
 import Typer from './components/Typer.vue';
 import Stats from './components/Stats.vue';
+import Keyboards from './components/Keyboards.vue';
 import App from './App.vue';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -13,7 +14,8 @@ const router = new VueRouter({
   base: __dirname,
   routes: [
     { path: '/', component: Typer },
-    { path: '/stats', components: Stats }
+    { path: '/stats', component: Stats },
+    { path: '/keyboards', component: Keyboards }
   ]
 });
 
