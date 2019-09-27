@@ -169,12 +169,10 @@ export default {
 <style>
 .correct {
   color: var(--pink);
-  font-size: 20px;
 }
 
 .typo {
   color: var(--hot-pink);
-  font-size: 20px;
   text-decoration: underline;
   -webkit-text-decoration-color: var(--hot-pink);
   text-decoration-color: var(--hot-pink);
