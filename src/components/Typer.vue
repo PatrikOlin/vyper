@@ -73,6 +73,14 @@ export default {
       }
     };
   },
+  mounted() {
+    if (localStorage.latestWpm) {
+      stats.previous.wpm = localStorage.latestWpm;
+    }
+    if (localStorage.latestTypos) {
+      stats.previous.typos = localStorage.latestTypos;
+    }
+  },
   methods: {
     calculateWpm: function() {
       this.correctlyTypedText = this.correctlyTypedText.concat(this.typedText);
@@ -90,6 +98,7 @@ export default {
         wpm: words,
         typos: this.typos
       };
+      this.persist();
     },
     pickNewParagraph() {
       const idx = Math.floor(Math.random() * this.filteredParagraphs.length);
@@ -110,6 +119,10 @@ export default {
       } else {
         this.filteredParagraphs = this.allParagraphs;
       }
+    },
+    persist() {
+      localStorage.latestWpm = this.stats.current.wpm;
+      localStorage.latestTypos = this.stats.current.typos;
     }
   },
   created() {
