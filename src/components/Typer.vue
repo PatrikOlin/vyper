@@ -200,13 +200,13 @@ export default {
 
 .typer textarea {
   color: var(--typed-text);
-  background-color: var(--dark-bg);
+  background-color: var(--bright-bg);
   border: none;
 }
 
 .typer textarea:focus {
   color: var(--typed-text);
-  background-color: var(--dark-bg);
+  background-color: var(--bright-bg);
   outline: none;
 }
 </style>
