@@ -1,4 +1,4 @@
-# vyper
+# vyper - vue typing tester
 
 ## Project setup
 ```
