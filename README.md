@@ -1,4 +1,5 @@
 # vyper - vue typing tester
+Typing speed tester built in Vue
 
 ## Project setup
 ```
